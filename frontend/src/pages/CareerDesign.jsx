@@ -4,6 +4,9 @@ import AssessmentSelector from '../components/career/AssessmentSelector';
 import MultiAssessmentRunner from '../components/career/MultiAssessmentRunner';
 import MultiResultStep from '../components/career/MultiResultStep';
 import JobDetailStep from '../components/career/JobDetailStep';
+import { useAuth } from '../context/Useauth.jsx';
+import { getJob } from '../api/careernetApi';
+import { mapApiJobToCard } from '../utils/apiMappers';
 
 /**
  * 진로설계 메인 페이지
@@ -14,6 +17,7 @@ import JobDetailStep from '../components/career/JobDetailStep';
  * Phase 4 — JobDetailStep         : 직업 상세
  */
 const CareerDesign = () => {
+    const { user } = useAuth();
     const [phase, setPhase] = useState('select'); // select | running | result | detail
     const [selectedIds, setSelectedIds]     = useState([]);   // ['HOLLAND','BIG5', ...]
     const [allResults, setAllResults]       = useState({});   // { HOLLAND: {...}, ... }
@@ -44,10 +48,26 @@ const CareerDesign = () => {
         scrollTop();
     };
 
-    const handleJobSelect = (job) => {
+    const handleJobSelect = async (job) => {
         setSelectedJob(job);
         setPhase('detail');
         scrollTop();
+
+        const apiJobId = Number(job.jobId || job.id);
+        if (!Number.isFinite(apiJobId)) {
+            return;
+        }
+
+        try {
+            const detail = await getJob(apiJobId);
+            setSelectedJob({
+                ...mapApiJobToCard(detail),
+                matchScore: job.matchScore,
+                breakdown: job.breakdown,
+            });
+        } catch {
+            setSelectedJob(job);
+        }
     };
 
     const handleReset = () => {
@@ -135,6 +155,7 @@ const CareerDesign = () => {
                 {phase === 'running' && (
                     <MultiAssessmentRunner
                         selectedIds={selectedIds}
+                        userId={user?.userId}
                         onComplete={handleRunnerDone}
                         onBack={handleBackToSelect}
                     />

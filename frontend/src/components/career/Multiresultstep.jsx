@@ -44,6 +44,21 @@ const MultiResultStep = ({ allResults, recommendations, selectedIds, onSelectJob
                         ✨ {selectedIds.length}가지 검사 결과를 앙상블 통합하여 직업을 추천합니다
                     </p>
                 )}
+                {allResults.HOLLAND?.savedAssessmentId && (
+                    <p style={{ fontSize: '12px', color: '#059669', margin: '8px 0 0' }}>
+                        검사 결과가 저장되었습니다. 저장 ID: {allResults.HOLLAND.savedAssessmentId}
+                    </p>
+                )}
+                {allResults.HOLLAND?.saveSkipped && (
+                    <p style={{ fontSize: '12px', color: '#d97706', margin: '8px 0 0' }}>
+                        로그인하면 검사 결과를 계정에 저장할 수 있습니다.
+                    </p>
+                )}
+                {allResults.HOLLAND?.saveError && (
+                    <p style={{ fontSize: '12px', color: '#b91c1c', margin: '8px 0 0' }}>
+                        검사 결과 저장 실패: {allResults.HOLLAND.saveError}
+                    </p>
+                )}
             </div>
 
             {/* 탭 네비게이션 */}

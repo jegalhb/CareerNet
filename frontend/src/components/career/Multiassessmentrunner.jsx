@@ -8,6 +8,8 @@ import {
     calcValuesResult, calcBig5Result,
     getEnsembleRecommendations, getProgress, isComplete,
 } from '../../utils/multiMatcher';
+import { getApiErrorMessage, submitHollandAssessment } from '../../api/careernetApi';
+import { mapApiJobToCard } from '../../utils/apiMappers';
 
 const CALC_MAP = {
     HOLLAND:  calcHollandResult,
@@ -16,7 +18,7 @@ const CALC_MAP = {
     BIG5:     calcBig5Result,
 };
 
-const MultiAssessmentRunner = ({ selectedIds, onComplete, onBack }) => {
+const MultiAssessmentRunner = ({ selectedIds, userId, onComplete, onBack }) => {
     const [currentIdx, setCurrentIdx]   = useState(0);
     const [allAnswers, setAllAnswers]    = useState({});
     const [pageIdx, setPageIdx]          = useState(0);
@@ -51,7 +53,7 @@ const MultiAssessmentRunner = ({ selectedIds, onComplete, onBack }) => {
         }));
     };
 
-    const handleNextPage = () => {
+    const handleNextPage = async () => {
         if (pageIdx < totalPages - 1) {
             setPageIdx(p => p + 1);
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -72,7 +74,25 @@ const MultiAssessmentRunner = ({ selectedIds, onComplete, onBack }) => {
                 });
                 // 현재 답변도 포함
                 results[currentId] = CALC_MAP[currentId]({ ...currentAnswers });
-                const recs = getEnsembleRecommendations(results);
+                let recs = getEnsembleRecommendations(results);
+
+                if (results.HOLLAND) {
+                    if (userId) {
+                        try {
+                            const savedResult = await submitHollandAssessment(userId, allAnswers.HOLLAND || currentAnswers);
+                            results.HOLLAND.savedAssessmentId = savedResult.assessId;
+                            results.HOLLAND.serverResult = savedResult;
+
+                            if (selectedIds.length === 1 && Array.isArray(savedResult.recommendations)) {
+                                recs = savedResult.recommendations.map(mapApiJobToCard);
+                            }
+                        } catch (error) {
+                            results.HOLLAND.saveError = getApiErrorMessage(error);
+                        }
+                    } else {
+                        results.HOLLAND.saveSkipped = true;
+                    }
+                }
                 onComplete(results, recs);
             }
         }

@@ -45,6 +45,21 @@ public class AppUser extends BaseTimeEntity {
     protected AppUser() {
     }
 
+    public AppUser(
+            String email,
+            String passwordHash,
+            String name,
+            String educationLevel,
+            String interest
+    ) {
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.name = name;
+        this.educationLevel = educationLevel;
+        this.interest = interest;
+        this.role = UserRole.USER;
+    }
+
     public Long getId() {
         return id;
     }

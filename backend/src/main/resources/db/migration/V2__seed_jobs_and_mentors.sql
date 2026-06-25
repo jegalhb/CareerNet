@@ -194,20 +194,22 @@ INSERT INTO seed_category_holland (category, type1, type2, type3) VALUES
 ('미디어/문화', 'A', 'E', 'S');
 
 INSERT INTO job_holland_code (job_id, holland_type, weight, sort_order)
-SELECT j.job_id, h.type1, 1.00, 1
+SELECT
+    j.job_id,
+    CASE holland_rank.sort_order
+        WHEN 1 THEN h.type1
+        WHEN 2 THEN h.type2
+        ELSE h.type3
+    END,
+    holland_rank.weight,
+    holland_rank.sort_order
 FROM job j
-JOIN seed_jobs sj ON sj.job_code = j.job_code
 JOIN seed_category_holland h ON h.category = j.category
-UNION ALL
-SELECT j.job_id, h.type2, 0.70, 2
-FROM job j
-JOIN seed_jobs sj ON sj.job_code = j.job_code
-JOIN seed_category_holland h ON h.category = j.category
-UNION ALL
-SELECT j.job_id, h.type3, 0.50, 3
-FROM job j
-JOIN seed_jobs sj ON sj.job_code = j.job_code
-JOIN seed_category_holland h ON h.category = j.category;
+JOIN (
+    SELECT 1 AS sort_order, 1.00 AS weight
+    UNION ALL SELECT 2, 0.70
+    UNION ALL SELECT 3, 0.50
+) holland_rank;
 
 CREATE TEMPORARY TABLE seed_mentor_slot (
     slot_no INT PRIMARY KEY,
