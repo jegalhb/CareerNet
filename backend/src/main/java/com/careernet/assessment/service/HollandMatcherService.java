@@ -1,12 +1,20 @@
 package com.careernet.assessment.service;
 
+import com.careernet.assessment.domain.AssessmentAnswer;
+import com.careernet.assessment.domain.AssessmentRecommendation;
+import com.careernet.assessment.domain.AssessmentResult;
+import com.careernet.assessment.domain.AssessmentType;
 import com.careernet.assessment.dto.AssessmentDto;
-import com.careernet.assessment.repository.AssessmentRepository;
+import com.careernet.assessment.repository.AssessmentAnswerRepository;
+import com.careernet.assessment.repository.AssessmentRecommendationRepository;
+import com.careernet.assessment.repository.AssessmentResultRepository;
+import com.careernet.common.exception.BusinessException;
 import com.careernet.job.domain.Job;
 import com.careernet.job.repository.JobRepository;
+import com.careernet.user.domain.AppUser;
+import com.careernet.user.repository.AppUserRepository;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,15 +44,24 @@ public class HollandMatcherService {
         TYPE_INFO.put("C", new String[]{"관습형", "C"});
     }
 
-    private final AssessmentRepository assessmentRepository;
+    private final AssessmentResultRepository assessmentResultRepository;
+    private final AssessmentAnswerRepository assessmentAnswerRepository;
+    private final AssessmentRecommendationRepository assessmentRecommendationRepository;
     private final JobRepository jobRepository;
+    private final AppUserRepository appUserRepository;
 
     public HollandMatcherService(
-            AssessmentRepository assessmentRepository,
-            JobRepository jobRepository
+            AssessmentResultRepository assessmentResultRepository,
+            AssessmentAnswerRepository assessmentAnswerRepository,
+            AssessmentRecommendationRepository assessmentRecommendationRepository,
+            JobRepository jobRepository,
+            AppUserRepository appUserRepository
     ) {
-        this.assessmentRepository = assessmentRepository;
+        this.assessmentResultRepository = assessmentResultRepository;
+        this.assessmentAnswerRepository = assessmentAnswerRepository;
+        this.assessmentRecommendationRepository = assessmentRecommendationRepository;
         this.jobRepository = jobRepository;
+        this.appUserRepository = appUserRepository;
     }
 
     public Map<String, Integer> calcRawScores(Map<Integer, Integer> answers) {
@@ -97,11 +114,12 @@ public class HollandMatcherService {
     }
 
     public int calcJobMatchScore(Job job, Map<String, Integer> percentScores) {
-        if (job.getHollandCodes() == null || job.getHollandCodes().isBlank()) {
+        String hollandCodes = job.getHollandCodeText();
+        if (hollandCodes == null || hollandCodes.isBlank()) {
             return 0;
         }
 
-        String[] codes = job.getHollandCodes().trim().split("\\s+");
+        String[] codes = hollandCodes.trim().split("\\s+");
         double[] weights = {0.5, 0.3, 0.2};
         double score = 0;
 
@@ -114,6 +132,8 @@ public class HollandMatcherService {
 
     @Transactional
     public AssessmentDto.ResultResponse processAssessment(AssessmentDto.SubmitRequest request) {
+        AppUser user = appUserRepository.findById(request.getUserId())
+                .orElseThrow(() -> new BusinessException("User not found."));
         Map<Integer, Integer> answers = request.getAnswers();
 
         Map<String, Integer> rawScores = calcRawScores(answers);
@@ -122,18 +142,22 @@ public class HollandMatcherService {
         String hollandCode = getHollandCode(ranked);
         String primaryType = ranked.isEmpty() ? "" : ranked.get(0).getType();
 
-        List<AssessmentDto.JobMatch> recommendations = jobRepository.findAll().stream()
+        List<Job> jobs = jobRepository.findAll().stream()
+                .filter(job -> job.getDeletedAt() == null)
+                .collect(Collectors.toList());
+
+        List<AssessmentDto.JobMatch> recommendations = jobs.stream()
                 .map(job -> toJobMatch(job, percentScores))
                 .sorted(Comparator.comparingInt(AssessmentDto.JobMatch::getMatchScore).reversed())
                 .limit(8)
                 .collect(Collectors.toList());
 
-        Long assessId = saveAssessment(request, rawScores, percentScores, hollandCode, primaryType);
-        saveAnswers(assessId, answers);
-        saveRecommendations(assessId, request.getUserId(), recommendations);
+        AssessmentResult assessmentResult = saveAssessment(user, rawScores, percentScores, hollandCode, primaryType);
+        saveAnswers(assessmentResult, answers);
+        saveRecommendations(assessmentResult, user, jobs, recommendations);
 
         AssessmentDto.ResultResponse response = new AssessmentDto.ResultResponse();
-        response.setAssessId(assessId);
+        response.setAssessId(assessmentResult.getId());
         response.setHollandCode(hollandCode);
         response.setPrimaryType(primaryType);
         response.setRawScores(rawScores);
@@ -145,9 +169,10 @@ public class HollandMatcherService {
 
     private AssessmentDto.JobMatch toJobMatch(Job job, Map<String, Integer> percentScores) {
         AssessmentDto.JobMatch match = new AssessmentDto.JobMatch();
-        match.setJobId(job.getJobId());
-        match.setTitle(job.getJobName());
-        match.setEmoji(getJobEmoji(job.getJobId()));
+        match.setJobId(job.getId());
+        match.setJobCode(job.getJobCode());
+        match.setTitle(job.getName());
+        match.setEmoji(getJobEmoji(job.getJobCode()));
         match.setCategory(job.getCategory());
         match.setAvgSalary(job.getAvgSalary());
         match.setOutlookLabel(job.getOutlookLabel());
@@ -158,62 +183,72 @@ public class HollandMatcherService {
         return match;
     }
 
-    private Long saveAssessment(
-            AssessmentDto.SubmitRequest request,
+    private AssessmentResult saveAssessment(
+            AppUser user,
             Map<String, Integer> rawScores,
             Map<String, Integer> percentScores,
             String hollandCode,
             String primaryType
     ) {
-        Map<String, Object> assessment = new HashMap<>();
-        assessment.put("userId", request.getUserId());
-        assessment.put("scoreR", rawScores.get("R"));
-        assessment.put("scoreI", rawScores.get("I"));
-        assessment.put("scoreA", rawScores.get("A"));
-        assessment.put("scoreS", rawScores.get("S"));
-        assessment.put("scoreE", rawScores.get("E"));
-        assessment.put("scoreC", rawScores.get("C"));
-        assessment.put("pctR", percentScores.get("R"));
-        assessment.put("pctI", percentScores.get("I"));
-        assessment.put("pctA", percentScores.get("A"));
-        assessment.put("pctS", percentScores.get("S"));
-        assessment.put("pctE", percentScores.get("E"));
-        assessment.put("pctC", percentScores.get("C"));
-        assessment.put("hollandCode", hollandCode);
-        assessment.put("primaryType", primaryType);
-        return assessmentRepository.saveAssessment(assessment);
+        AssessmentResult assessmentResult = new AssessmentResult(
+                user,
+                AssessmentType.HOLLAND,
+                hollandCode,
+                primaryType,
+                rawScores.get("R"),
+                rawScores.get("I"),
+                rawScores.get("A"),
+                rawScores.get("S"),
+                rawScores.get("E"),
+                rawScores.get("C"),
+                percentScores.get("R"),
+                percentScores.get("I"),
+                percentScores.get("A"),
+                percentScores.get("S"),
+                percentScores.get("E"),
+                percentScores.get("C")
+        );
+        return assessmentResultRepository.save(assessmentResult);
     }
 
-    private void saveAnswers(Long assessId, Map<Integer, Integer> answers) {
-        if (answers == null) {
-            return;
-        }
-
-        answers.forEach((questionId, score) ->
-                assessmentRepository.saveAnswer(
-                        assessId,
-                        questionId,
-                        QUESTION_TYPE_MAP.getOrDefault(questionId, "?"),
-                        score
-                )
-        );
+    private void saveAnswers(AssessmentResult assessmentResult, Map<Integer, Integer> answers) {
+        List<AssessmentAnswer> savedAnswers = answers.entrySet().stream()
+                .map(entry -> new AssessmentAnswer(
+                        assessmentResult,
+                        entry.getKey(),
+                        QUESTION_TYPE_MAP.getOrDefault(entry.getKey(), "?"),
+                        entry.getValue()
+                ))
+                .collect(Collectors.toList());
+        assessmentAnswerRepository.saveAll(savedAnswers);
     }
 
     private void saveRecommendations(
-            Long assessId,
-            Long userId,
+            AssessmentResult assessmentResult,
+            AppUser user,
+            List<Job> jobs,
             List<AssessmentDto.JobMatch> recommendations
     ) {
+        Map<Long, Job> jobsById = jobs.stream()
+                .collect(Collectors.toMap(Job::getId, job -> job));
+
+        List<AssessmentRecommendation> savedRecommendations = new ArrayList<>();
         for (int i = 0; i < recommendations.size(); i++) {
             AssessmentDto.JobMatch recommendation = recommendations.get(i);
-            assessmentRepository.saveRecommendation(
-                    assessId,
-                    userId,
-                    recommendation.getJobId(),
+            Job job = jobsById.get(recommendation.getJobId());
+            if (job == null) {
+                continue;
+            }
+            savedRecommendations.add(new AssessmentRecommendation(
+                    assessmentResult,
+                    user,
+                    job,
                     recommendation.getMatchScore(),
+                    recommendation.getMatchLabel(),
                     i + 1
-            );
+            ));
         }
+        assessmentRecommendationRepository.saveAll(savedRecommendations);
     }
 
     private String getMatchLabel(int score) {
@@ -229,19 +264,19 @@ public class HollandMatcherService {
         return "참고용";
     }
 
-    private String getJobEmoji(String jobId) {
+    private String getJobEmoji(String jobCode) {
         Map<String, String> emojiMap = Map.of(
-                "job_001", "AI",
-                "job_002", "UX",
-                "job_003", "DATA",
-                "job_004", "WEB",
-                "job_005", "HW",
-                "job_006", "SEC",
-                "job_007", "GAME",
-                "job_008", "MEDIA",
-                "job_009", "PM",
-                "job_010", "CLOUD"
+                "ai-engineer", "AI",
+                "ux-ui-designer", "UX",
+                "data-analyst", "DATA",
+                "web-developer", "WEB",
+                "robotics-engineer", "HW",
+                "security-specialist", "SEC",
+                "game-developer", "GAME",
+                "media-planner", "MEDIA",
+                "service-planner", "PM",
+                "cloud-engineer", "CLOUD"
         );
-        return emojiMap.getOrDefault(jobId, "JOB");
+        return emojiMap.getOrDefault(jobCode, "JOB");
     }
 }

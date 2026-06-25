@@ -1,12 +1,17 @@
 package com.careernet.assessment.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
 public class AssessmentDto {
 
     public static class SubmitRequest {
+        @NotNull
         private Long userId;
+
+        @NotEmpty
         private Map<Integer, Integer> answers;
 
         public Long getUserId() {
@@ -129,7 +134,8 @@ public class AssessmentDto {
     }
 
     public static class JobMatch {
-        private String jobId;
+        private Long jobId;
+        private String jobCode;
         private String title;
         private String emoji;
         private String category;
@@ -138,12 +144,20 @@ public class AssessmentDto {
         private String avgSalary;
         private String outlookLabel;
 
-        public String getJobId() {
+        public Long getJobId() {
             return jobId;
         }
 
-        public void setJobId(String jobId) {
+        public void setJobId(Long jobId) {
             this.jobId = jobId;
+        }
+
+        public String getJobCode() {
+            return jobCode;
+        }
+
+        public void setJobCode(String jobCode) {
+            this.jobCode = jobCode;
         }
 
         public String getTitle() {

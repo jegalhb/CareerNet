@@ -1,40 +1,97 @@
 package com.careernet.job.domain;
 
-public class Job {
+import com.careernet.common.domain.BaseTimeEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
-    private final String jobId;
-    private final String jobName;
-    private final String category;
-    private final String avgSalary;
-    private final String outlookLabel;
-    private final String hollandCodes;
+@Entity
+@Table(name = "job")
+public class Job extends BaseTimeEntity {
 
-    public Job(
-            String jobId,
-            String jobName,
-            String category,
-            String avgSalary,
-            String outlookLabel,
-            String hollandCodes
-    ) {
-        this.jobId = jobId;
-        this.jobName = jobName;
-        this.category = category;
-        this.avgSalary = avgSalary;
-        this.outlookLabel = outlookLabel;
-        this.hollandCodes = hollandCodes;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "job_id")
+    private Long id;
+
+    @Column(name = "job_code", nullable = false, unique = true, length = 50)
+    private String jobCode;
+
+    @Column(nullable = false, length = 150)
+    private String name;
+
+    @Column(nullable = false, length = 100)
+    private String category;
+
+    @Column(length = 500)
+    private String summary;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Column(name = "required_skills", columnDefinition = "TEXT")
+    private String requiredSkills;
+
+    @Column(columnDefinition = "TEXT")
+    private String roadmap;
+
+    @Column(name = "avg_salary", length = 100)
+    private String avgSalary;
+
+    @Column(name = "outlook_label", length = 100)
+    private String outlookLabel;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("sortOrder ASC")
+    private List<JobHollandCode> hollandCodes = new ArrayList<>();
+
+    protected Job() {
     }
 
-    public String getJobId() {
-        return jobId;
+    public Long getId() {
+        return id;
     }
 
-    public String getJobName() {
-        return jobName;
+    public String getJobCode() {
+        return jobCode;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getCategory() {
         return category;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getRequiredSkills() {
+        return requiredSkills;
+    }
+
+    public String getRoadmap() {
+        return roadmap;
     }
 
     public String getAvgSalary() {
@@ -45,7 +102,18 @@ public class Job {
         return outlookLabel;
     }
 
-    public String getHollandCodes() {
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public List<JobHollandCode> getHollandCodes() {
         return hollandCodes;
+    }
+
+    public String getHollandCodeText() {
+        return hollandCodes.stream()
+                .sorted(Comparator.comparingInt(JobHollandCode::getSortOrder))
+                .map(JobHollandCode::getHollandType)
+                .collect(Collectors.joining(" "));
     }
 }
