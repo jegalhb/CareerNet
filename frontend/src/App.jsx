@@ -13,6 +13,7 @@ import CareerDesign from './pages/CareerDesign';
 import JobInfo      from './pages/JobInfo';
 import JobDetail    from './pages/JobDetail';
 import Mentoring    from './pages/Mentoring';
+import MyPage       from './pages/MyPage.jsx';
 
 function AppInner() {
     const [activeDropdown, setActiveDropdown] = useState(null);
@@ -43,9 +44,8 @@ function AppInner() {
                             <Route path="/jobs"       element={<JobInfo />} />
                             <Route path="/jobs/:jobId"element={<JobDetail />} />
                             <Route path="/mentoring"  element={<Mentoring />} />
+                            <Route path="/mypage/*"   element={<MyPage />} />
                             <Route path="/all-menu"   element={<AllMenuPage />} />
-                            {/* 추후 추가 */}
-                            {/* <Route path="/mypage/*" element={<MyPage />} /> */}
                         </Routes>
                     </>
                 } />

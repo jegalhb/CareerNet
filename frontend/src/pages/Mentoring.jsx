@@ -1,12 +1,17 @@
 // src/pages/Mentoring.jsx
 import React, { useEffect, useMemo, useState } from 'react';
-import { getApiErrorMessage, getMentors } from '../api/careernetApi';
+import { createMentoringRequest, getApiErrorMessage, getMentor, getMentors } from '../api/careernetApi';
 import { mapApiMentorToCard } from '../utils/apiMappers';
+import { useAuth } from '../context/Useauth.jsx';
 
 const Mentoring = () => {
+    const { user, isLoggedIn } = useAuth();
     const [mentors, setMentors] = useState([]);
     const [keyword, setKeyword] = useState('');
     const [selectedMentor, setSelectedMentor] = useState(null);
+    const [requestMessage, setRequestMessage] = useState('');
+    const [requestStatus, setRequestStatus] = useState('');
+    const [submitting, setSubmitting] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -26,6 +31,49 @@ const Mentoring = () => {
 
         loadMentors();
     }, []);
+
+    const handleSelectMentor = async (mentor) => {
+        setSelectedMentor(mentor);
+        setRequestMessage('');
+        setRequestStatus('');
+
+        try {
+            const detail = await getMentor(mentor.mentorId);
+            setSelectedMentor(mapApiMentorToCard(detail));
+        } catch {
+            setSelectedMentor(mentor);
+        }
+    };
+
+    const handleCreateRequest = async () => {
+        if (!isLoggedIn || !user?.userId) {
+            setRequestStatus('로그인 후 멘토링을 신청할 수 있습니다.');
+            return;
+        }
+
+        const firstJob = selectedMentor?.relatedJobs?.[0];
+        if (!selectedMentor || !firstJob?.jobId) {
+            setRequestStatus('멘토와 연결된 직업 정보를 불러온 뒤 다시 시도해주세요.');
+            return;
+        }
+
+        setSubmitting(true);
+        setRequestStatus('');
+        try {
+            const created = await createMentoringRequest({
+                userId: user.userId,
+                mentorId: selectedMentor.mentorId,
+                jobId: firstJob.jobId,
+                requestMessage,
+            });
+            setRequestStatus(`${created.mentorName} 멘토에게 신청이 접수되었습니다.`);
+            setRequestMessage('');
+        } catch (err) {
+            setRequestStatus(getApiErrorMessage(err));
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     const filteredMentors = useMemo(() => {
         const normalized = keyword.trim().toLowerCase();
@@ -98,7 +146,7 @@ const Mentoring = () => {
                                     <button
                                         key={mentor.mentorId}
                                         type="button"
-                                        onClick={() => setSelectedMentor(mentor)}
+                                        onClick={() => handleSelectMentor(mentor)}
                                         style={{
                                             textAlign: 'left',
                                             background: '#fff',
@@ -158,21 +206,64 @@ const Mentoring = () => {
                                     <p style={{ fontSize: '12px', color: '#4b5563', lineHeight: 1.7 }}>
                                         {selectedMentor.shortDescription}
                                     </p>
+                                    {selectedMentor.relatedJobs?.length > 0 && (
+                                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '12px' }}>
+                                            {selectedMentor.relatedJobs.slice(0, 3).map((job) => (
+                                                <span key={job.jobId} style={{
+                                                    fontSize: '11px',
+                                                    background: '#eff6ff',
+                                                    color: '#1e40af',
+                                                    borderRadius: '999px',
+                                                    padding: '3px 8px',
+                                                }}>
+                                                    {job.name}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                    <textarea
+                                        value={requestMessage}
+                                        onChange={(event) => setRequestMessage(event.target.value)}
+                                        placeholder="멘토에게 전달할 신청 메시지"
+                                        style={{
+                                            width: '100%',
+                                            minHeight: '86px',
+                                            boxSizing: 'border-box',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '8px',
+                                            padding: '10px',
+                                            fontSize: '12px',
+                                            resize: 'vertical',
+                                            marginBottom: '10px',
+                                        }}
+                                    />
+                                    {requestStatus && (
+                                        <p style={{
+                                            fontSize: '12px',
+                                            color: requestStatus.includes('접수') ? '#059669' : '#b91c1c',
+                                            lineHeight: 1.5,
+                                            margin: '0 0 10px',
+                                        }}>
+                                            {requestStatus}
+                                        </p>
+                                    )}
                                     <button
                                         type="button"
+                                        onClick={handleCreateRequest}
+                                        disabled={submitting}
                                         style={{
                                             width: '100%',
                                             border: 'none',
                                             borderRadius: '8px',
-                                            background: '#1a365d',
+                                            background: submitting ? '#9ca3af' : '#1a365d',
                                             color: '#fff',
                                             padding: '10px',
                                             fontSize: '13px',
                                             fontWeight: 800,
-                                            cursor: 'pointer',
+                                            cursor: submitting ? 'not-allowed' : 'pointer',
                                         }}
                                     >
-                                        멘토링 신청하기
+                                        {submitting ? '신청 중...' : '멘토링 신청하기'}
                                     </button>
                                 </>
                             ) : (

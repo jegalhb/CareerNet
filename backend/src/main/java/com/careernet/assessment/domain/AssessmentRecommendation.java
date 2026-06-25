@@ -65,4 +65,36 @@ public class AssessmentRecommendation {
         this.rankNo = rankNo;
         this.createdAt = LocalDateTime.now();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public AssessmentResult getAssessmentResult() {
+        return assessmentResult;
+    }
+
+    public AppUser getUser() {
+        return user;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public int getMatchScore() {
+        return matchScore;
+    }
+
+    public String getMatchLabel() {
+        return matchLabel;
+    }
+
+    public int getRankNo() {
+        return rankNo;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

@@ -60,3 +60,24 @@ export async function getMentor(mentorId) {
 export async function submitHollandAssessment(userId, answers) {
     return unwrap(await api.post('/assessments/holland', { userId, answers }));
 }
+
+export async function getUserAssessments(userId) {
+    return unwrap(await api.get(`/assessments/users/${userId}`));
+}
+
+export async function getUserAssessment(userId, assessmentId) {
+    return unwrap(await api.get(`/assessments/users/${userId}/${assessmentId}`));
+}
+
+export async function createMentoringRequest({ userId, mentorId, jobId, requestMessage }) {
+    return unwrap(await api.post('/mentoring-requests', {
+        userId,
+        mentorId,
+        jobId,
+        requestMessage,
+    }));
+}
+
+export async function getUserMentoringRequests(userId) {
+    return unwrap(await api.get(`/mentoring-requests/users/${userId}`));
+}

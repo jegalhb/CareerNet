@@ -46,4 +46,41 @@ public class MentoringRequest extends BaseTimeEntity {
 
     protected MentoringRequest() {
     }
+
+    public MentoringRequest(
+            AppUser user,
+            Mentor mentor,
+            Job job,
+            String requestMessage
+    ) {
+        this.user = user;
+        this.mentor = mentor;
+        this.job = job;
+        this.requestMessage = requestMessage;
+        this.status = MentoringRequestStatus.REQUESTED;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public AppUser getUser() {
+        return user;
+    }
+
+    public Mentor getMentor() {
+        return mentor;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public String getRequestMessage() {
+        return requestMessage;
+    }
+
+    public MentoringRequestStatus getStatus() {
+        return status;
+    }
 }

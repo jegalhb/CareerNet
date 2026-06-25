@@ -1,5 +1,6 @@
 // src/components/RoadmapCard.jsx
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const STEP_DATA = [
     { icon: 'ti-chart-bar', label: '진단', title: '진단 단계 — 할 일 목록', items: ['흥미검사(Holland) 완료하기', '강점 자기진단 작성하기', '진로 상담사와 결과 리뷰 신청'] },
@@ -18,9 +19,9 @@ const RoadmapCard = () => {
             <span className="ann-badge" style={{ top: '-10px', left: '10px' }}>④ 로드맵 → 마이페이지로 이동</span>
             <div className="section-header">
                 <span className="section-title">내 진로 로드맵</span>
-                <span className="section-more" style={{ color: 'var(--blue-600)', fontWeight: 500 }}>
+                <Link to="/mypage/roadmap" className="section-more" style={{ color: 'var(--blue-600)', fontWeight: 500, textDecoration: 'none' }}>
           마이페이지에서 보기 <i className="ti ti-chevron-right" aria-hidden="true"></i>
-        </span>
+        </Link>
             </div>
 
             {/* Stepper Grid */}

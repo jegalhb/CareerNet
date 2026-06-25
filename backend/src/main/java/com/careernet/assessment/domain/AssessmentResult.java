@@ -119,4 +119,72 @@ public class AssessmentResult {
     public Long getId() {
         return id;
     }
+
+    public AppUser getUser() {
+        return user;
+    }
+
+    public AssessmentType getAssessmentType() {
+        return assessmentType;
+    }
+
+    public String getHollandCode() {
+        return hollandCode;
+    }
+
+    public String getPrimaryType() {
+        return primaryType;
+    }
+
+    public int getScoreR() {
+        return scoreR;
+    }
+
+    public int getScoreI() {
+        return scoreI;
+    }
+
+    public int getScoreA() {
+        return scoreA;
+    }
+
+    public int getScoreS() {
+        return scoreS;
+    }
+
+    public int getScoreE() {
+        return scoreE;
+    }
+
+    public int getScoreC() {
+        return scoreC;
+    }
+
+    public int getPctR() {
+        return pctR;
+    }
+
+    public int getPctI() {
+        return pctI;
+    }
+
+    public int getPctA() {
+        return pctA;
+    }
+
+    public int getPctS() {
+        return pctS;
+    }
+
+    public int getPctE() {
+        return pctE;
+    }
+
+    public int getPctC() {
+        return pctC;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }
