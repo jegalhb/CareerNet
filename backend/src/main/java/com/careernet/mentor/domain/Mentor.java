@@ -67,4 +67,56 @@ public class Mentor extends BaseTimeEntity {
     public Long getId() {
         return id;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public String getHeadline() {
+        return headline;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public String getInterviewTitle() {
+        return interviewTitle;
+    }
+
+    public String getInterviewContent() {
+        return interviewContent;
+    }
+
+    public String getCareerSummary() {
+        return careerSummary;
+    }
+
+    public int getRecommendationCount() {
+        return recommendationCount;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public List<MentorJob> getMentorJobs() {
+        return mentorJobs;
+    }
 }

@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Entity
@@ -115,5 +116,22 @@ public class Job extends BaseTimeEntity {
                 .sorted(Comparator.comparingInt(JobHollandCode::getSortOrder))
                 .map(JobHollandCode::getHollandType)
                 .collect(Collectors.joining(" "));
+    }
+
+    public boolean containsKeyword(String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return true;
+        }
+
+        String normalized = keyword.toLowerCase(Locale.ROOT);
+        return contains(name, normalized)
+                || contains(category, normalized)
+                || contains(summary, normalized)
+                || contains(description, normalized)
+                || contains(requiredSkills, normalized);
+    }
+
+    private boolean contains(String value, String keyword) {
+        return value != null && value.toLowerCase(Locale.ROOT).contains(keyword);
     }
 }

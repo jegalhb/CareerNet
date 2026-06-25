@@ -41,4 +41,24 @@ public class MentorJob {
 
     protected MentorJob() {
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Mentor getMentor() {
+        return mentor;
+    }
+
+    public Job getJob() {
+        return job;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public BigDecimal getRecommendationWeight() {
+        return recommendationWeight;
+    }
 }
