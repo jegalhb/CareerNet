@@ -126,17 +126,36 @@ const Main = () => {
                 </div>
             </section>
 
-            <div className="tab-nav">
-                <button className={`tab ${activeTab === 'recommended' ? 'active' : ''}`} onClick={() => setActiveTab('recommended')}>
-                    추천 서비스
-                </button>
-                <button className={`tab ${activeTab === 'popular' ? 'active' : ''}`} onClick={() => setActiveTab('popular')}>
-                    인기 서비스
-                </button>
-                <button className={`tab ${activeTab === 'news' ? 'active' : ''}`} onClick={() => setActiveTab('news')}>
-                    새소식
-                </button>
-            </div>
+            <section style={homeTabsWrapStyle}>
+                <div style={homeTabsStyle}>
+                    {[
+                        ['recommended', '추천 서비스', '검사, 멘토링, 채용 탐색'],
+                        ['popular', '인기 서비스', '많이 이용하는 기능'],
+                        ['news', '새소식', '공지와 최신 채용'],
+                    ].map(([id, label, desc]) => {
+                        const active = activeTab === id;
+                        return (
+                            <button
+                                key={id}
+                                type="button"
+                                onClick={() => setActiveTab(id)}
+                                style={{
+                                    ...homeTabButtonStyle,
+                                    background: active ? '#1a365d' : '#fff',
+                                    color: active ? '#fff' : '#334155',
+                                    borderColor: active ? '#1a365d' : '#e5e7eb',
+                                    boxShadow: active ? '0 10px 22px rgba(26,54,93,0.18)' : 'none',
+                                }}
+                            >
+                                <span style={{ fontSize: '14px', fontWeight: 900 }}>{label}</span>
+                                <span style={{ fontSize: '11px', color: active ? '#dbeafe' : '#64748b', marginTop: '3px' }}>
+                                    {desc}
+                                </span>
+                            </button>
+                        );
+                    })}
+                </div>
+            </section>
 
             {tabContent}
 
@@ -269,5 +288,30 @@ const listTitleStyle = { color: '#111827', fontSize: '16px', margin: 0, fontWeig
 const moreLinkStyle = { color: '#2563eb', fontSize: '12px', fontWeight: 800, textDecoration: 'none' };
 const rowLinkStyle = { display: 'grid', gridTemplateColumns: '86px 1fr', gap: '10px', padding: '10px 0', borderTop: '1px solid #f3f4f6', color: '#374151', fontSize: '13px', textDecoration: 'none' };
 const emptyTextStyle = { color: '#6b7280', fontSize: '13px', margin: '14px 0 0' };
+
+const homeTabsWrapStyle = {
+    background: '#f9fafb',
+    padding: '22px 2rem 0',
+};
+
+const homeTabsStyle = {
+    maxWidth: '980px',
+    margin: '0 auto',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+    gap: '12px',
+};
+
+const homeTabButtonStyle = {
+    border: '1px solid #e5e7eb',
+    borderRadius: '8px',
+    padding: '14px 16px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    textAlign: 'left',
+    cursor: 'pointer',
+    transition: 'all 0.18s ease',
+};
 
 export default Main;
