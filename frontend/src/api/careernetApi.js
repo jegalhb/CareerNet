@@ -81,3 +81,35 @@ export async function createMentoringRequest({ userId, mentorId, jobId, requestM
 export async function getUserMentoringRequests(userId) {
     return unwrap(await api.get(`/mentoring-requests/users/${userId}`));
 }
+
+export async function getRecruitments(params = {}) {
+    return unwrap(await api.get('/recruitments', { params }));
+}
+
+export async function getRecruitment(recruitmentId) {
+    return unwrap(await api.get(`/recruitments/${recruitmentId}`));
+}
+
+export async function getCommunityPosts(params = {}) {
+    return unwrap(await api.get('/community/posts', { params }));
+}
+
+export async function getCommunityPost(postId) {
+    return unwrap(await api.get(`/community/posts/${postId}`));
+}
+
+export async function getUserJobBookmarks(userId) {
+    return unwrap(await api.get(`/bookmarks/users/${userId}/jobs`));
+}
+
+export async function getJobBookmarkStatus(userId, jobId) {
+    return unwrap(await api.get(`/bookmarks/jobs/${jobId}`, { params: { userId } }));
+}
+
+export async function createJobBookmark(userId, jobId) {
+    return unwrap(await api.post('/bookmarks/jobs', { userId, jobId }));
+}
+
+export async function deleteJobBookmark(userId, jobId) {
+    return unwrap(await api.delete(`/bookmarks/users/${userId}/jobs/${jobId}`));
+}

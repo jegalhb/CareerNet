@@ -14,6 +14,12 @@ import JobInfo      from './pages/JobInfo';
 import JobDetail    from './pages/JobDetail';
 import Mentoring    from './pages/Mentoring';
 import MyPage       from './pages/MyPage.jsx';
+import RecruitPage from './pages/RecruitPage.jsx';
+import RecruitDetailPage from './pages/RecruitDetailPage.jsx';
+import CommunityPage from './pages/CommunityPage.jsx';
+import CommunityDetailPage from './pages/CommunityDetailPage.jsx';
+import FindIdPage from './pages/FindIdPage.jsx';
+import FindPasswordPage from './pages/FindPasswordPage.jsx';
 
 function AppInner() {
     const [activeDropdown, setActiveDropdown] = useState(null);
@@ -44,8 +50,14 @@ function AppInner() {
                             <Route path="/jobs"       element={<JobInfo />} />
                             <Route path="/jobs/:jobId"element={<JobDetail />} />
                             <Route path="/mentoring"  element={<Mentoring />} />
+                            <Route path="/recruit"    element={<RecruitPage />} />
+                            <Route path="/recruit/:recruitmentId" element={<RecruitDetailPage />} />
+                            <Route path="/community"  element={<CommunityPage />} />
+                            <Route path="/community/:postId" element={<CommunityDetailPage />} />
                             <Route path="/mypage/*"   element={<MyPage />} />
                             <Route path="/all-menu"   element={<AllMenuPage />} />
+                            <Route path="/find-id"    element={<FindIdPage />} />
+                            <Route path="/find-password" element={<FindPasswordPage />} />
                         </Routes>
                     </>
                 } />

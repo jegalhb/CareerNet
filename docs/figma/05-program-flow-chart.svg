@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1050" viewBox="0 0 1800 1050">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+  </defs>
+  <rect width="1800" height="1050" fill="#f8fafc"/>
+  <text x="60" y="70" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#111827">프로그램 플로우 차트</text>
+  <text x="60" y="110" font-family="Arial, sans-serif" font-size="16" fill="#64748b">React 화면에서 Spring MVC, Service, Repository, MySQL까지 이어지는 전체 실행 흐름입니다.</text>
+
+  <g font-family="Arial, sans-serif" font-size="15">
+    <rect x="80" y="190" width="250" height="90" rx="16" fill="#1a365d"/>
+    <text x="145" y="228" fill="#ffffff" font-size="18" font-weight="700">사용자</text>
+    <text x="125" y="255" fill="#dbeafe" font-size="13">클릭, 입력, 페이지 이동</text>
+
+    <rect x="430" y="190" width="270" height="90" rx="16" fill="#ffffff" stroke="#dbe3ef"/>
+    <text x="515" y="228" fill="#111827" font-size="18" font-weight="700">React Page</text>
+    <text x="480" y="255" fill="#64748b" font-size="13">Main, Jobs, Design, MyPage</text>
+    <line x1="330" y1="235" x2="430" y2="235" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="800" y="190" width="270" height="90" rx="16" fill="#ffffff" stroke="#dbe3ef"/>
+    <text x="880" y="228" fill="#111827" font-size="18" font-weight="700">API Client</text>
+    <text x="855" y="255" fill="#64748b" font-size="13">Axios / careernetApi.js</text>
+    <line x1="700" y1="235" x2="800" y2="235" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="1170" y="190" width="270" height="90" rx="16" fill="#eff6ff" stroke="#bfdbfe"/>
+    <text x="1245" y="228" fill="#1e40af" font-size="18" font-weight="700">HTTP REST</text>
+    <text x="1220" y="255" fill="#1e40af" font-size="13">GET / POST / DELETE</text>
+    <line x1="1070" y1="235" x2="1170" y2="235" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="80" y="430" width="270" height="100" rx="16" fill="#ffffff" stroke="#dbe3ef"/>
+    <text x="155" y="470" fill="#111827" font-size="18" font-weight="700">Controller</text>
+    <text x="132" y="498" fill="#64748b" font-size="13">요청 매핑, DTO 반환</text>
+    <line x1="1305" y1="280" x2="350" y2="450" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="470" y="430" width="270" height="100" rx="16" fill="#ffffff" stroke="#dbe3ef"/>
+    <text x="565" y="470" fill="#111827" font-size="18" font-weight="700">Service</text>
+    <text x="530" y="498" fill="#64748b" font-size="13">비즈니스 로직, 검증</text>
+    <line x1="350" y1="480" x2="470" y2="480" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="860" y="430" width="270" height="100" rx="16" fill="#ffffff" stroke="#dbe3ef"/>
+    <text x="935" y="470" fill="#111827" font-size="18" font-weight="700">Repository</text>
+    <text x="925" y="498" fill="#64748b" font-size="13">Spring Data JPA</text>
+    <line x1="740" y1="480" x2="860" y2="480" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="1250" y="430" width="270" height="100" rx="16" fill="#ecfdf5" stroke="#bbf7d0"/>
+    <text x="1322" y="470" fill="#166534" font-size="18" font-weight="700">MySQL</text>
+    <text x="1300" y="498" fill="#166534" font-size="13">Flyway schema + seed</text>
+    <line x1="1130" y1="480" x2="1250" y2="480" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="470" y="690" width="270" height="100" rx="16" fill="#f5f3ff" stroke="#ddd6fe"/>
+    <text x="545" y="730" fill="#6d28d9" font-size="18" font-weight="700">ApiResponse</text>
+    <text x="525" y="758" fill="#6d28d9" font-size="13">success, message, data</text>
+
+    <line x1="1250" y1="530" x2="740" y2="700" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="605" y1="690" x2="605" y2="530" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+    <line x1="470" y1="735" x2="205" y2="280" stroke="#334155" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="980" y="690" width="540" height="150" rx="16" fill="#ffffff" stroke="#dbe3ef"/>
+    <text x="1020" y="735" fill="#111827" font-size="20" font-weight="700">대표 처리 흐름</text>
+    <text x="1020" y="775" fill="#334155" font-size="15">1. 사용자가 진로 검사를 제출한다.</text>
+    <text x="1020" y="805" fill="#334155" font-size="15">2. 백엔드는 검사 결과와 추천 직업을 저장한다.</text>
+    <text x="1020" y="835" fill="#334155" font-size="15">3. 프론트는 추천 직업, 멘토, 로드맵을 화면에 표시한다.</text>
+  </g>
+</svg>

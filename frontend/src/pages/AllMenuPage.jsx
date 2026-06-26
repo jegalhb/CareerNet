@@ -1,15 +1,31 @@
 // src/pages/AllMenuPage.jsx
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AllMenuPage = () => {
     const navigate = useNavigate();
 
     const menuData = [
-        { title: '채용정보', links: ['채용정보 상세검색', '직종별', '지역별', '테마별'] },
-        { title: '취업지원', links: ['직업심리검사', '진로상담', '취업지원 프로그램'] },
-        { title: '직업/진로', links: ['직업정보 검색', '학과정보', '진로설계 로드맵'] },
-        { title: '고객센터', links: ['공지사항', '자주 묻는 질문', '문의하기'] }
+        { title: '채용정보', links: [
+            { label: '채용공고', path: '/recruit' },
+            { label: '직업별 채용 탐색', path: '/recruit' },
+            { label: '최신 채용공고', path: '/recruit' },
+        ] },
+        { title: '진로지원', links: [
+            { label: '진로 검사', path: '/design' },
+            { label: '현직자 멘토링', path: '/mentoring' },
+            { label: '내 진로 로드맵', path: '/mypage/roadmap' },
+        ] },
+        { title: '직업/학과', links: [
+            { label: '직업정보 검색', path: '/jobs' },
+            { label: '관심 직업', path: '/mypage/bookmarks' },
+            { label: '직업 추천 결과', path: '/mypage/tests' },
+        ] },
+        { title: '커뮤니티', links: [
+            { label: '공지사항', path: '/community' },
+            { label: '진로 질문', path: '/community' },
+            { label: '멘토링 후기', path: '/community' },
+        ] },
     ];
 
     return (
@@ -21,7 +37,7 @@ const AllMenuPage = () => {
                     onClick={() => navigate(-1)}
                     style={{ padding: '10px 24px', borderRadius: '50px', border: '1px solid #ddd', background: 'transparent', cursor: 'pointer', fontSize: '16px' }}
                 >
-                    닫기 ✕
+                    닫기
                 </button>
             </div>
 
@@ -41,7 +57,7 @@ const AllMenuPage = () => {
                         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                             {section.links.map((link, i) => (
                                 <li key={i} style={{ marginBottom: '12px' }}>
-                                    <a href="#" style={{
+                                    <Link to={link.path} style={{
                                         textDecoration: 'none',
                                         color: '#4b5563',
                                         fontSize: '15px',
@@ -50,8 +66,8 @@ const AllMenuPage = () => {
                                        onMouseOver={(e) => { e.target.style.color = '#2563eb'; e.target.style.fontWeight = 'bold'; }}
                                        onMouseOut={(e) => { e.target.style.color = '#4b5563'; e.target.style.fontWeight = 'normal'; }}
                                     >
-                                        {link}
-                                    </a>
+                                        {link.label}
+                                    </Link>
                                 </li>
                             ))}
                         </ul>

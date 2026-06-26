@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <rect width="1600" height="1000" fill="#f8fafc"/>
+  <text x="60" y="70" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#111827">CareerNet 기존 와이어프레임 개요</text>
+  <text x="60" y="110" font-family="Arial, sans-serif" font-size="16" fill="#64748b">서비스의 주요 화면을 한눈에 확인하기 위한 화면 구성 초안입니다.</text>
+
+  <g transform="translate(60 160)">
+    <rect width="460" height="300" rx="12" fill="#ffffff" stroke="#dbe3ef"/>
+    <rect width="460" height="48" rx="12" fill="#1a365d"/>
+    <text x="24" y="31" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">메인 홈</text>
+    <rect x="24" y="78" width="412" height="72" rx="10" fill="#dbeafe"/>
+    <text x="44" y="108" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#1e3a8a">Hero 검색 영역</text>
+    <text x="44" y="132" font-family="Arial, sans-serif" font-size="13" fill="#475569">직업명, 분야, 관심 키워드 검색</text>
+    <rect x="24" y="172" width="125" height="86" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+    <rect x="168" y="172" width="125" height="86" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+    <rect x="312" y="172" width="125" height="86" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="42" y="217" font-family="Arial, sans-serif" font-size="13" fill="#334155">추천 서비스</text>
+    <text x="188" y="217" font-family="Arial, sans-serif" font-size="13" fill="#334155">직업 슬라이더</text>
+    <text x="334" y="217" font-family="Arial, sans-serif" font-size="13" fill="#334155">학과 슬라이더</text>
+  </g>
+
+  <g transform="translate(570 160)">
+    <rect width="460" height="300" rx="12" fill="#ffffff" stroke="#dbe3ef"/>
+    <rect width="460" height="48" rx="12" fill="#1a365d"/>
+    <text x="24" y="31" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">진로 검사</text>
+    <rect x="24" y="78" width="412" height="44" rx="8" fill="#f1f5f9"/>
+    <text x="44" y="106" font-family="Arial, sans-serif" font-size="14" fill="#334155">Holland 문항 응답</text>
+    <rect x="24" y="146" width="412" height="56" rx="8" fill="#eff6ff"/>
+    <text x="44" y="178" font-family="Arial, sans-serif" font-size="14" fill="#1e40af">검사 결과 분석</text>
+    <rect x="24" y="226" width="195" height="44" rx="8" fill="#ffffff" stroke="#dbe3ef"/>
+    <rect x="241" y="226" width="195" height="44" rx="8" fill="#ffffff" stroke="#dbe3ef"/>
+    <text x="65" y="254" font-family="Arial, sans-serif" font-size="13" fill="#334155">추천 직업</text>
+    <text x="282" y="254" font-family="Arial, sans-serif" font-size="13" fill="#334155">상세 이동</text>
+  </g>
+
+  <g transform="translate(1080 160)">
+    <rect width="460" height="300" rx="12" fill="#ffffff" stroke="#dbe3ef"/>
+    <rect width="460" height="48" rx="12" fill="#1a365d"/>
+    <text x="24" y="31" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">직업 상세</text>
+    <rect x="24" y="78" width="160" height="92" rx="10" fill="#dbeafe"/>
+    <rect x="204" y="78" width="232" height="92" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="44" y="128" font-family="Arial, sans-serif" font-size="13" fill="#1e3a8a">직업 이미지</text>
+    <text x="224" y="114" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">직업 설명/역량</text>
+    <text x="224" y="140" font-family="Arial, sans-serif" font-size="13" fill="#64748b">로드맵, 전공, 멘토 연결</text>
+    <rect x="24" y="202" width="195" height="56" rx="8" fill="#eff6ff"/>
+    <rect x="241" y="202" width="195" height="56" rx="8" fill="#fdf2f8"/>
+    <text x="62" y="236" font-family="Arial, sans-serif" font-size="13" fill="#1e40af">관심 직업 저장</text>
+    <text x="286" y="236" font-family="Arial, sans-serif" font-size="13" fill="#be185d">멘토링 신청</text>
+  </g>
+
+  <g transform="translate(60 540)">
+    <rect width="460" height="300" rx="12" fill="#ffffff" stroke="#dbe3ef"/>
+    <rect width="460" height="48" rx="12" fill="#1a365d"/>
+    <text x="24" y="31" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">마이페이지</text>
+    <rect x="24" y="78" width="412" height="44" rx="8" fill="#f1f5f9"/>
+    <text x="44" y="106" font-family="Arial, sans-serif" font-size="14" fill="#334155">프로필 / 로드맵 / 검사 결과 / 즐겨찾기 / 멘토링</text>
+    <rect x="24" y="152" width="78" height="70" rx="8" fill="#eff6ff"/>
+    <rect x="111" y="152" width="78" height="70" rx="8" fill="#eff6ff"/>
+    <rect x="198" y="152" width="78" height="70" rx="8" fill="#eff6ff"/>
+    <rect x="285" y="152" width="78" height="70" rx="8" fill="#eff6ff"/>
+    <rect x="372" y="152" width="64" height="70" rx="8" fill="#eff6ff"/>
+    <text x="39" y="191" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">진단</text>
+    <text x="122" y="191" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">직업</text>
+    <text x="209" y="191" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">역량</text>
+    <text x="296" y="191" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">멘토</text>
+    <text x="384" y="191" font-family="Arial, sans-serif" font-size="12" fill="#1e40af">취업</text>
+  </g>
+
+  <g transform="translate(570 540)">
+    <rect width="460" height="300" rx="12" fill="#ffffff" stroke="#dbe3ef"/>
+    <rect width="460" height="48" rx="12" fill="#1a365d"/>
+    <text x="24" y="31" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">채용공고</text>
+    <rect x="24" y="78" width="412" height="42" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="44" y="105" font-family="Arial, sans-serif" font-size="13" fill="#64748b">회사명, 직무, 지역 검색</text>
+    <rect x="24" y="146" width="412" height="54" rx="8" fill="#ffffff" stroke="#dbe3ef"/>
+    <rect x="24" y="216" width="412" height="54" rx="8" fill="#ffffff" stroke="#dbe3ef"/>
+    <text x="44" y="180" font-family="Arial, sans-serif" font-size="14" fill="#111827">공고 카드 → 상세 → 연결 직업</text>
+    <text x="44" y="250" font-family="Arial, sans-serif" font-size="14" fill="#111827">직업 시장 요구 역량 확인</text>
+  </g>
+
+  <g transform="translate(1080 540)">
+    <rect width="460" height="300" rx="12" fill="#ffffff" stroke="#dbe3ef"/>
+    <rect width="460" height="48" rx="12" fill="#1a365d"/>
+    <text x="24" y="31" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">커뮤니티</text>
+    <rect x="24" y="78" width="412" height="42" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="44" y="105" font-family="Arial, sans-serif" font-size="13" fill="#64748b">공지, 새소식, 질문, 후기</text>
+    <rect x="24" y="146" width="412" height="54" rx="8" fill="#ffffff" stroke="#dbe3ef"/>
+    <rect x="24" y="216" width="412" height="54" rx="8" fill="#ffffff" stroke="#dbe3ef"/>
+    <text x="44" y="180" font-family="Arial, sans-serif" font-size="14" fill="#111827">목록 조회</text>
+    <text x="44" y="250" font-family="Arial, sans-serif" font-size="14" fill="#111827">상세 내용 확인</text>
+  </g>
+</svg>

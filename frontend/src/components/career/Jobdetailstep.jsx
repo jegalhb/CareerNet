@@ -25,17 +25,17 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
 
     const mentorPrograms = [
         {
-            icon: '❓',
+            label: 'Q&A',
             title: `${job.title} 실무 Q&A`,
             desc: '현직자에게 직무, 취업 준비, 실무 흐름을 직접 질문해보세요.',
         },
         {
-            icon: '📁',
+            label: '리뷰',
             title: '포트폴리오 리뷰',
             desc: '지원 직무에 맞춰 프로젝트와 경험을 어떻게 보여줄지 피드백받습니다.',
         },
         {
-            icon: '🧭',
+            label: '코칭',
             title: '1:1 커리어 코칭',
             desc: '학습 방향, 전공 선택, 취업 준비 순서를 개인별로 점검합니다.',
         },
@@ -60,7 +60,17 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                 color: '#fff',
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
-                    <span style={{ fontSize: '52px' }}>{job.emoji}</span>
+                    <img
+                        src={job.imageUrl}
+                        alt={`${job.title} 관련 이미지`}
+                        style={{
+                            width: '92px',
+                            height: '72px',
+                            borderRadius: '10px',
+                            objectFit: 'cover',
+                            border: '1px solid rgba(255,255,255,0.22)',
+                        }}
+                    />
                     <div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
                             <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#fff', margin: 0 }}>
@@ -81,7 +91,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                     color: '#fff', padding: '2px 8px', borderRadius: '6px',
                                     border: '1px solid rgba(255,255,255,0.2)',
                                 }}>
-                  {TYPE_INFO[code]?.emoji} {TYPE_INFO[code]?.name}
+                  {TYPE_INFO[code]?.name}
                 </span>
                             ))}
                         </div>
@@ -158,7 +168,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                     {/* 직업 설명 */}
                     <div style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '18px' }}>
                         <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#1a365d', margin: '0 0 10px' }}>
-                            📋 직업 소개
+                            직업 소개
                         </h4>
                         <p style={{ fontSize: '13px', color: '#374151', lineHeight: '1.7', margin: 0 }}>
                             {job.desc}
@@ -168,7 +178,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                     {/* 근무 환경 */}
                     <div style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '18px' }}>
                         <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#1a365d', margin: '0 0 10px' }}>
-                            🏢 근무 환경
+                            근무 환경
                         </h4>
                         <p style={{ fontSize: '13px', color: '#374151', lineHeight: '1.7', margin: 0 }}>
                             {job.workEnv}
@@ -178,7 +188,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                     {/* 핵심 스킬 */}
                     <div style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '18px' }}>
                         <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#1a365d', margin: '0 0 12px' }}>
-                            🛠 핵심 스킬
+                            핵심 스킬
                         </h4>
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                             {job.keySkills.map((skill) => (
@@ -196,7 +206,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                     {/* 관련 전공 */}
                     <div style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '18px' }}>
                         <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#1a365d', margin: '0 0 12px' }}>
-                            🎓 관련 전공
+                            관련 전공
                         </h4>
                         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                             {job.requiredMajors.map((major) => (
@@ -218,7 +228,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                             border: '1px solid #bfdbfe', padding: '18px',
                         }}>
                             <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#1e40af', margin: '0 0 10px' }}>
-                                📊 나와의 적합도 분석
+                                나와의 적합도 분석
                             </h4>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 {job.hollandCodes.map((code, i) => {
@@ -229,7 +239,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                         <div key={code}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
                         <span style={{ fontSize: '12px', color: info.color, fontWeight: 500 }}>
-                          {info.emoji} {info.name} ({weight} 유형)
+                          {info.name} ({weight} 유형)
                         </span>
                                                 <span style={{ fontSize: '12px', fontWeight: 600, color: info.color }}>{score}점</span>
                                             </div>
@@ -252,7 +262,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     <div style={{ background: '#fff', borderRadius: '12px', border: '1px solid #e5e7eb', padding: '20px' }}>
                         <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#1a365d', margin: '0 0 4px' }}>
-                            🗺️ {job.title} 진로 로드맵
+                            {job.title} 진로 로드맵
                         </h4>
                         <p style={{ fontSize: '12px', color: '#9ca3af', margin: '0 0 18px' }}>
                             {job.growthPath}
@@ -349,11 +359,14 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                             position: 'absolute',
                                             right: '28px',
                                             bottom: '22px',
-                                            fontSize: '92px',
-                                            opacity: 0.2,
-                                        }}>
-                                            {job.emoji}
-                                        </div>
+                                            width: '160px',
+                                            height: '110px',
+                                            borderRadius: '18px',
+                                            backgroundImage: `url(${job.imageUrl})`,
+                                            backgroundSize: 'cover',
+                                            backgroundPosition: 'center',
+                                            opacity: 0.22,
+                                        }} />
                                     </>
                                 )}
 
@@ -371,7 +384,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                         padding: '5px 12px',
                                         marginBottom: '16px',
                                     }}>
-                                        🎙 현직자 인터뷰
+                                        현직자 인터뷰
                                     </span>
 
                                     <h3 style={{
@@ -507,9 +520,9 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                     marginTop: '16px',
                                 }}>
                                     {[
-                                        { icon: '💼', label: '직무', value: '실무 중심' },
-                                        { icon: '🎯', label: '초점', value: '취업 준비' },
-                                        { icon: '📌', label: '방식', value: '로드맵형' },
+                                        { code: '직무', label: '직무', value: '실무 중심' },
+                                        { code: '초점', label: '초점', value: '취업 준비' },
+                                        { code: '방식', label: '방식', value: '로드맵형' },
                                     ].map((item) => (
                                         <div key={item.label} style={{
                                             background: '#fff',
@@ -518,7 +531,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                             padding: '10px',
                                             textAlign: 'center',
                                         }}>
-                                            <div style={{ fontSize: '17px', marginBottom: '3px' }}>{item.icon}</div>
+                                            <div style={{ fontSize: '11px', color: '#1a365d', fontWeight: 800, marginBottom: '3px' }}>{item.code}</div>
                                             <div style={{ fontSize: '10px', color: '#9ca3af' }}>{item.label}</div>
                                             <div style={{ fontSize: '11px', color: '#111827', fontWeight: 800 }}>
                                                 {item.value}
@@ -555,7 +568,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                     color: '#1a365d',
                                     margin: 0,
                                 }}>
-                                    🎬 직업 관련 영상
+                                    직업 관련 영상
                                 </h4>
                                 <span style={{
                                     fontSize: '10px',
@@ -679,7 +692,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                     color: '#1a365d',
                                     margin: '0 0 12px',
                                 }}>
-                                    💬 직무 한줄평
+                                    직무 한줄평
                                 </h4>
 
                                 <div style={{
@@ -713,7 +726,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                     color: '#1a365d',
                                     margin: '0 0 12px',
                                 }}>
-                                    🖼 직무 이미지 키워드
+                                    직무 이미지 키워드
                                 </h4>
 
                                 <div style={{
@@ -722,10 +735,10 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                     gap: '8px',
                                 }}>
                                     {[
-                                        { icon: '🧩', label: '문제 해결' },
-                                        { icon: '🤝', label: '협업' },
-                                        { icon: '📊', label: '성과 관리' },
-                                        { icon: '🚀', label: '성장 가능성' },
+                                        { code: '문제', label: '문제 해결' },
+                                        { code: '협업', label: '협업' },
+                                        { code: '성과', label: '성과 관리' },
+                                        { code: '성장', label: '성장 가능성' },
                                     ].map((item) => (
                                         <div key={item.label} style={{
                                             background: '#f9fafb',
@@ -735,7 +748,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                             textAlign: 'center',
                                         }}>
                                             <div style={{ fontSize: '22px', marginBottom: '6px' }}>
-                                                {item.icon}
+                                                {item.code}
                                             </div>
                                             <div style={{
                                                 fontSize: '11px',
@@ -764,7 +777,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                             color: '#1a365d',
                             margin: '0 0 14px',
                         }}>
-                            ✨ 실무자가 알려주는 핵심 포인트
+                            실무자가 알려주는 핵심 포인트
                         </h4>
 
                         <div style={{
@@ -774,17 +787,17 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                         }}>
                             {[
                                 {
-                                    icon: '📌',
+                                    code: '업무',
                                     title: '주요 업무',
                                     desc: job.desc,
                                 },
                                 {
-                                    icon: '🛠',
+                                    code: '역량',
                                     title: '필요 역량',
                                     desc: `${(job.keySkills || []).slice(0, 3).join(', ')} 역량이 중요합니다.`,
                                 },
                                 {
-                                    icon: '🎓',
+                                    code: '준비',
                                     title: '준비 방법',
                                     desc: `${(job.requiredMajors || []).slice(0, 2).join(', ')} 관련 학습과 프로젝트 경험을 함께 쌓아보세요.`,
                                 },
@@ -806,7 +819,7 @@ const JobDetailStep = ({ job, assessmentResult, onBack, onReset }) => {
                                         fontSize: '18px',
                                         marginBottom: '10px',
                                     }}>
-                                        {point.icon}
+                                        {point.code}
                                     </div>
                                     <div style={{
                                         fontSize: '13px',

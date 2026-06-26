@@ -1,12 +1,13 @@
 // src/pages/JobInfo.jsx
 import React, { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { getApiErrorMessage, getJobs } from '../api/careernetApi';
 import { mapApiJobToCard } from '../utils/apiMappers';
 
 const JobInfo = () => {
     const [jobs, setJobs] = useState([]);
-    const [keyword, setKeyword] = useState('');
+    const [searchParams] = useSearchParams();
+    const [keyword, setKeyword] = useState(searchParams.get('keyword') || '');
     const [category, setCategory] = useState('전체');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
@@ -27,6 +28,10 @@ const JobInfo = () => {
 
         loadJobs();
     }, []);
+
+    useEffect(() => {
+        setKeyword(searchParams.get('keyword') || '');
+    }, [searchParams]);
 
     const categories = useMemo(
         () => ['전체', ...Array.from(new Set(jobs.map((job) => job.category))).filter(Boolean)],
@@ -128,50 +133,53 @@ const JobInfo = () => {
                                     style={{
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        gap: '10px',
-                                        minHeight: '186px',
+                                        minHeight: '260px',
                                         background: '#fff',
                                         border: '1px solid #e5e7eb',
                                         borderRadius: '8px',
-                                        padding: '16px',
                                         color: 'inherit',
                                         textDecoration: 'none',
+                                        overflow: 'hidden',
                                     }}
                                 >
-                                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                        <span style={{ fontSize: '28px' }}>{job.emoji}</span>
+                                    <img
+                                        src={job.imageUrl}
+                                        alt={`${job.title} 관련 이미지`}
+                                        style={{ width: '100%', height: '126px', objectFit: 'cover', background: '#f3f4f6' }}
+                                    />
+                                    <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
                                         <div>
                                             <div style={{ fontSize: '15px', fontWeight: 800, color: '#111827' }}>
                                                 {job.title}
                                             </div>
-                                            <div style={{ fontSize: '11px', color: '#6b7280' }}>{job.category}</div>
+                                            <div style={{ fontSize: '11px', color: '#6b7280', marginTop: '2px' }}>{job.category}</div>
                                         </div>
-                                    </div>
-                                    <p style={{
-                                        fontSize: '12px',
-                                        color: '#4b5563',
-                                        lineHeight: 1.55,
-                                        margin: 0,
-                                        flex: 1,
-                                    }}>
-                                        {job.desc}
-                                    </p>
-                                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                                        {job.hollandCodes.map((code) => (
-                                            <span key={code} style={{
-                                                fontSize: '10px',
-                                                background: '#eff6ff',
-                                                color: '#1e40af',
-                                                padding: '3px 7px',
-                                                borderRadius: '999px',
-                                            }}>
-                                                {code}
-                                            </span>
-                                        ))}
-                                    </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#6b7280' }}>
-                                        <span>{job.avgSalary}</span>
-                                        <span>{job.outlookLabel}</span>
+                                        <p style={{
+                                            fontSize: '12px',
+                                            color: '#4b5563',
+                                            lineHeight: 1.55,
+                                            margin: 0,
+                                            flex: 1,
+                                        }}>
+                                            {job.desc}
+                                        </p>
+                                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                            {job.hollandCodes.map((code) => (
+                                                <span key={code} style={{
+                                                    fontSize: '10px',
+                                                    background: '#eff6ff',
+                                                    color: '#1e40af',
+                                                    padding: '3px 7px',
+                                                    borderRadius: '999px',
+                                                }}>
+                                                    {code}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#6b7280' }}>
+                                            <span>{job.avgSalary}</span>
+                                            <span>{job.outlookLabel}</span>
+                                        </div>
                                     </div>
                                 </Link>
                             ))}

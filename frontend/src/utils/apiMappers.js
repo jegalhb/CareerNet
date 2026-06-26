@@ -11,6 +11,30 @@ const DEFAULT_EMOJI_BY_CATEGORY = {
     '미디어/문화': '🎬',
 };
 
+const IMAGE_BY_CATEGORY = {
+    'IT/개발': 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=700&auto=format&fit=crop',
+    '데이터/AI': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=700&auto=format&fit=crop',
+    '디자인/콘텐츠': 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?q=80&w=700&auto=format&fit=crop',
+    '경영/기획': 'https://images.unsplash.com/photo-1556761175-b413da4baf72?q=80&w=700&auto=format&fit=crop',
+    '교육/상담': 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=700&auto=format&fit=crop',
+    '의료/보건': 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=700&auto=format&fit=crop',
+    '공학/제조': 'https://images.unsplash.com/photo-1581091215367-9b6c00b3035a?q=80&w=700&auto=format&fit=crop',
+    '금융/법률': 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=700&auto=format&fit=crop',
+    '환경/에너지': 'https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=700&auto=format&fit=crop',
+    '미디어/문화': 'https://images.unsplash.com/photo-1497015289639-54688650d173?q=80&w=700&auto=format&fit=crop',
+};
+
+const IMAGE_BY_CODE_KEYWORD = [
+    ['ai', 'https://images.unsplash.com/photo-1677442136019-21780efad99a?q=80&w=700&auto=format&fit=crop'],
+    ['data', 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=700&auto=format&fit=crop'],
+    ['developer', 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=700&auto=format&fit=crop'],
+    ['designer', 'https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?q=80&w=700&auto=format&fit=crop'],
+    ['doctor', 'https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?q=80&w=700&auto=format&fit=crop'],
+    ['nurse', 'https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=700&auto=format&fit=crop'],
+    ['robotics', 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=700&auto=format&fit=crop'],
+    ['renewable', 'https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=700&auto=format&fit=crop'],
+];
+
 function splitText(value) {
     if (!value) {
         return [];
@@ -31,6 +55,14 @@ function getEmoji(job) {
     if (code.includes('doctor') || code.includes('nurse')) return '🩺';
     if (code.includes('law') || code.includes('account')) return '💼';
     return DEFAULT_EMOJI_BY_CATEGORY[job.category] || '✨';
+}
+
+export function getJobImage(job = {}) {
+    const code = job.jobCode || '';
+    const matched = IMAGE_BY_CODE_KEYWORD.find(([keyword]) => code.includes(keyword));
+    return matched?.[1]
+        || IMAGE_BY_CATEGORY[job.category]
+        || 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=700&auto=format&fit=crop';
 }
 
 function normalizeOutlook(outlookLabel = '') {
@@ -55,6 +87,7 @@ export function mapApiJobToCard(job) {
         jobCode: job.jobCode,
         title,
         emoji: job.emoji || getEmoji(job),
+        imageUrl: job.imageUrl || getJobImage(job),
         category: job.category,
         hollandCodes,
         avgSalary: job.avgSalary || '정보 준비 중',

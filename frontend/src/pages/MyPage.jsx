@@ -5,6 +5,7 @@ import {
     getApiErrorMessage,
     getUserAssessment,
     getUserAssessments,
+    getUserJobBookmarks,
     getUserMentoringRequests,
 } from '../api/careernetApi';
 import { useAuth } from '../context/Useauth.jsx';
@@ -12,6 +13,7 @@ import { useAuth } from '../context/Useauth.jsx';
 const TABS = [
     { id: 'profile', label: '내 프로필', path: '/mypage/profile' },
     { id: 'roadmap', label: '내 진로 로드맵', path: '/mypage/roadmap' },
+    { id: 'bookmarks', label: '즐겨찾기', path: '/mypage/bookmarks' },
     { id: 'tests', label: '검사 결과', path: '/mypage/tests' },
     { id: 'mentoring', label: '멘토링 내역', path: '/mypage/mentoring' },
 ];
@@ -65,6 +67,7 @@ const MyPage = () => {
     const [assessments, setAssessments] = useState([]);
     const [selectedAssessment, setSelectedAssessment] = useState(null);
     const [mentoringRequests, setMentoringRequests] = useState([]);
+    const [bookmarks, setBookmarks] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -102,6 +105,11 @@ const MyPage = () => {
                 if (activeTab === 'mentoring') {
                     const data = await getUserMentoringRequests(user.userId);
                     setMentoringRequests(data);
+                }
+
+                if (activeTab === 'bookmarks') {
+                    const data = await getUserJobBookmarks(user.userId);
+                    setBookmarks(data);
                 }
             } catch (err) {
                 setError(getApiErrorMessage(err));
@@ -189,6 +197,10 @@ const MyPage = () => {
 
                 {activeTab === 'roadmap' && (
                     <RoadmapPanel />
+                )}
+
+                {activeTab === 'bookmarks' && (
+                    <BookmarkPanel bookmarks={bookmarks} loading={loading} />
                 )}
 
                 {activeTab === 'tests' && (
@@ -421,6 +433,59 @@ const AssessmentPanel = ({ assessments, selectedAssessment, loading, onSelectAss
             ) : (
                 <p style={{ color: '#6b7280', fontSize: '13px', margin: 0 }}>검사 결과를 선택해주세요.</p>
             )}
+        </div>
+    </section>
+);
+
+const BookmarkPanel = ({ bookmarks, loading }) => (
+    <section style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '18px' }}>
+        <h3 style={{ fontSize: '15px', color: '#1a365d', margin: '0 0 12px', fontWeight: 800 }}>
+            즐겨찾는 직업
+        </h3>
+        {loading && <p style={{ fontSize: '13px', color: '#6b7280' }}>불러오는 중입니다.</p>}
+        {!loading && !bookmarks.length && (
+            <p style={{ fontSize: '13px', color: '#6b7280' }}>
+                아직 저장한 직업이 없습니다. 직업 상세 화면에서 관심 직업을 저장해보세요.
+            </p>
+        )}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '12px' }}>
+            {bookmarks.map((bookmark) => (
+                <Link
+                    key={bookmark.bookmarkId}
+                    to={`/jobs/${bookmark.job.jobId}`}
+                    style={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        border: '1px solid #e5e7eb',
+                        borderRadius: '8px',
+                        padding: '14px',
+                        background: '#fff',
+                    }}
+                >
+                    <div style={{ fontSize: '14px', fontWeight: 800, color: '#111827', marginBottom: '4px' }}>
+                        {bookmark.job.name}
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#6b7280', marginBottom: '10px' }}>
+                        {bookmark.job.category} · {formatDateTime(bookmark.createdAt)}
+                    </div>
+                    <p style={{ fontSize: '12px', color: '#4b5563', lineHeight: 1.6, margin: '0 0 10px' }}>
+                        {bookmark.job.summary}
+                    </p>
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                        {(bookmark.job.hollandTypes || []).map((code) => (
+                            <span key={code} style={{
+                                fontSize: '10px',
+                                background: '#eff6ff',
+                                color: '#1e40af',
+                                padding: '3px 7px',
+                                borderRadius: '999px',
+                            }}>
+                                {code}
+                            </span>
+                        ))}
+                    </div>
+                </Link>
+            ))}
         </div>
     </section>
 );

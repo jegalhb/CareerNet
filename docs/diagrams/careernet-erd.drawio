@@ -1,0 +1,63 @@
+<mxfile host="app.diagrams.net" modified="2026-06-25T12:35:00.000Z" agent="Codex" version="24.7.17">
+  <diagram id="careernet-erd" name="CareerNet ERD">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="CareerNet Database ERD" style="text;html=1;fontSize=26;fontStyle=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="500" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="app_user" value="&lt;b&gt;app_user&lt;/b&gt;&lt;br&gt;PK user_id BIGINT&lt;br&gt;email UNIQUE&lt;br&gt;password_hash&lt;br&gt;name&lt;br&gt;education_level&lt;br&gt;interest&lt;br&gt;role&lt;br&gt;deleted_at" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f1ff;strokeColor=#1a365d;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="70" y="110" width="220" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="assessment_result" value="&lt;b&gt;assessment_result&lt;/b&gt;&lt;br&gt;PK assessment_id BIGINT&lt;br&gt;FK user_id&lt;br&gt;assessment_type&lt;br&gt;holland_code&lt;br&gt;primary_type&lt;br&gt;score_r/i/a/s/e/c&lt;br&gt;pct_r/i/a/s/e/c&lt;br&gt;created_at" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7ed;strokeColor=#d97706;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="370" y="90" width="250" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="assessment_answer" value="&lt;b&gt;assessment_answer&lt;/b&gt;&lt;br&gt;PK answer_id BIGINT&lt;br&gt;FK assessment_id&lt;br&gt;question_id&lt;br&gt;question_type&lt;br&gt;score" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7ed;strokeColor=#d97706;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="700" y="70" width="230" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="assessment_recommendation" value="&lt;b&gt;assessment_recommendation&lt;/b&gt;&lt;br&gt;PK recommendation_id BIGINT&lt;br&gt;FK assessment_id&lt;br&gt;FK user_id&lt;br&gt;FK job_id&lt;br&gt;match_score&lt;br&gt;match_label&lt;br&gt;rank_no" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7ed;strokeColor=#d97706;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="700" y="260" width="260" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="job" value="&lt;b&gt;job&lt;/b&gt;&lt;br&gt;PK job_id BIGINT&lt;br&gt;job_code UNIQUE&lt;br&gt;name&lt;br&gt;category&lt;br&gt;summary&lt;br&gt;description&lt;br&gt;required_skills&lt;br&gt;roadmap&lt;br&gt;avg_salary&lt;br&gt;outlook_label&lt;br&gt;deleted_at" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecfdf5;strokeColor=#059669;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="210" width="250" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="job_holland_code" value="&lt;b&gt;job_holland_code&lt;/b&gt;&lt;br&gt;PK job_holland_code_id BIGINT&lt;br&gt;FK job_id&lt;br&gt;holland_type&lt;br&gt;weight&lt;br&gt;sort_order" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecfdf5;strokeColor=#059669;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="1370" y="250" width="220" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="mentor" value="&lt;b&gt;mentor&lt;/b&gt;&lt;br&gt;PK mentor_id BIGINT&lt;br&gt;name&lt;br&gt;job_title&lt;br&gt;company_name&lt;br&gt;profile_image_url&lt;br&gt;headline&lt;br&gt;short_description&lt;br&gt;interview_content&lt;br&gt;recommendation_count&lt;br&gt;is_active&lt;br&gt;deleted_at" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf2f8;strokeColor=#db2777;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="520" width="250" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="mentor_job" value="&lt;b&gt;mentor_job&lt;/b&gt;&lt;br&gt;PK mentor_job_id BIGINT&lt;br&gt;FK mentor_id&lt;br&gt;FK job_id&lt;br&gt;priority&lt;br&gt;recommendation_weight&lt;br&gt;UNIQUE mentor_id, job_id" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf2f8;strokeColor=#db2777;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="700" y="530" width="260" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="mentoring_request" value="&lt;b&gt;mentoring_request&lt;/b&gt;&lt;br&gt;PK mentoring_request_id BIGINT&lt;br&gt;FK user_id&lt;br&gt;FK mentor_id&lt;br&gt;FK job_id&lt;br&gt;request_message&lt;br&gt;status&lt;br&gt;created_at&lt;br&gt;updated_at" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#7c3aed;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="370" y="530" width="250" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="job_bookmark" value="&lt;b&gt;job_bookmark&lt;/b&gt;&lt;br&gt;PK bookmark_id BIGINT&lt;br&gt;FK user_id&lt;br&gt;FK job_id&lt;br&gt;created_at&lt;br&gt;updated_at&lt;br&gt;UNIQUE user_id, job_id" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#2563eb;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="70" y="540" width="230" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="recruitment" value="&lt;b&gt;recruitment&lt;/b&gt;&lt;br&gt;PK recruitment_id BIGINT&lt;br&gt;company_name&lt;br&gt;title&lt;br&gt;location&lt;br&gt;employment_type&lt;br&gt;career_level&lt;br&gt;deadline_date&lt;br&gt;source_url&lt;br&gt;summary&lt;br&gt;description&lt;br&gt;FK job_id" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f9ff;strokeColor=#0284c7;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="800" width="250" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="community_post" value="&lt;b&gt;community_post&lt;/b&gt;&lt;br&gt;PK post_id BIGINT&lt;br&gt;category&lt;br&gt;title&lt;br&gt;author&lt;br&gt;summary&lt;br&gt;content&lt;br&gt;view_count&lt;br&gt;pinned&lt;br&gt;deleted_at" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#64748b;fontSize=12;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="70" y="800" width="230" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="e_user_assessment" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="app_user" target="assessment_result"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_assessment_answer" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="assessment_result" target="assessment_answer"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_assessment_recommendation" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="assessment_result" target="assessment_recommendation"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_user_recommendation" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="app_user" target="assessment_recommendation"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_job_recommendation" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="job" target="assessment_recommendation"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_job_holland" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="job" target="job_holland_code"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_mentor_mentor_job" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="mentor" target="mentor_job"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_job_mentor_job" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="job" target="mentor_job"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_user_request" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="app_user" target="mentoring_request"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_mentor_request" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="mentor" target="mentoring_request"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_job_request" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="job" target="mentoring_request"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_user_bookmark" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="app_user" target="job_bookmark"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_job_bookmark" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="job" target="job_bookmark"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e_job_recruitment" value="1:N" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;fontSize=11;" edge="1" parent="1" source="job" target="recruitment"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
