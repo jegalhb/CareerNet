@@ -189,7 +189,7 @@ GET /api/mentors/{mentorId}
 
 ## 4. 멘토 상세 페이지 구성
 
-사용자가 예시로 준 CareerNet 인터뷰 페이지처럼, 멘토 상세는 단순 카드가 아니라 실무자 인터뷰형 페이지가 적합합니다.
+멘토 상세는 실무자 인터뷰형 페이지로 구성했습니다.
 
 ### 화면 구성
 
@@ -253,11 +253,7 @@ sequenceDiagram
     API-->>FE: 다른 멘토 카드 목록 반환
 ```
 
-## 6. 구현 순서 제안
-
-한 번에 전체를 구현하면 검사/직업/멘토 연결이 어긋날 가능성이 큽니다.
-
-권장 순서는 아래와 같습니다.
+## 6. 구현 순서 
 
 ```text
 1. MySQL DDL 확정
@@ -267,32 +263,4 @@ sequenceDiagram
 5. 진로설계 결과 → 직업 추천 → 멘토 상세 연결
 6. 멘토링 직접 진입 페이지 구성
 7. 검색/필터/추천 정렬 고도화
-```
-
-## 7. 프론트에서 바뀔 가능성이 큰 파일
-
-현재 프론트 구조를 기준으로, 이후 실제 API 연결 시 수정 가능성이 큰 파일입니다.
-
-```text
-frontend/src/context/Useauth.jsx
-frontend/src/pages/CareerDesign.jsx
-frontend/src/components/career/Multiassessmentrunner.jsx
-frontend/src/components/career/Multiresultstep.jsx
-frontend/src/components/career/Jobdetailstep.jsx
-frontend/src/pages/JobInfo.jsx
-frontend/src/pages/JobDetail.jsx
-frontend/src/pages/Mentoring.jsx
-frontend/src/App.jsx
-```
-
-## 8. 이번 단계에서 확정할 것
-
-다음 구현으로 넘어가기 전에 아래 항목은 확정하는 것이 좋습니다.
-
-```text
-1. 사용자 로그인/회원가입을 먼저 구현할지
-2. 비로그인 사용자도 검사를 저장할지
-3. 멘토링 신청 기능까지 넣을지, 우선 멘토 상세 조회까지만 할지
-4. 직업 데이터와 멘토 데이터를 seed SQL로 넣을지
-5. 기존 프론트 JobDatabase.js 데이터를 MySQL seed로 이전할지
 ```
